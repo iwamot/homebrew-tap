@@ -1,0 +1,28 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    permissions:
+      contents: write  # to create and publish the GitHub Release
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
+        with:
+          egress-policy: audit
+
+      - uses: iwamot/actions/release-draft@35af46540ea16f3adb318c1a1739572b61f6fc53 # v0.8.0
+      - uses: iwamot/actions/release-publish@35af46540ea16f3adb318c1a1739572b61f6fc53 # v0.8.0
