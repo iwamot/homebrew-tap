@@ -4,25 +4,22 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v1.2.3)'
+        required: true
+        type: string
 
 permissions: {}
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
-
 jobs:
   release:
-    name: release
-    runs-on: ubuntu-26.04
-    timeout-minutes: 1
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.job }}-${{ github.ref }}
+      cancel-in-progress: false
+    uses: iwamot/workflows/.github/workflows/release-only.yml@249b6cfa8fd90b7b58fcaab643e75f9e6cb078dc # v8.16.0
+    with:
+      tag: ${{ inputs.tag || '' }}
     permissions:
-      contents: write  # to create and publish the GitHub Release
-    steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2.22.2
-        with:
-          egress-policy: audit
-
-      - uses: iwamot/actions/release-draft@abf40f0c68ccedf952b3a895934925ce60c7e269 # v2.11.0
-      - uses: iwamot/actions/release-publish@abf40f0c68ccedf952b3a895934925ce60c7e269 # v2.11.0
+      contents: write  # to create the GitHub Release
