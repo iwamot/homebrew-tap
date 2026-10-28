@@ -10,7 +10,11 @@ mise install
 mise run gha-lint
 mise run shell-lint
 
-# Add repo-specific lint here
+# Check every generated cask without evaluating its install hooks.
+for cask in Casks/*.rb; do
+  echo "Checking $cask"
+  ruby -c "$cask"
+done
 
 # Check for uncommitted changes
 git diff --exit-code
