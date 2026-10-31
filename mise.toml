@@ -10,5 +10,5 @@ ruby = "4.0.9"
 
 [task_config]
 includes = [
-  "git::https://github.com/iwamot/mise-tasks.git//.mise/tasks?ref=v3.3.0",
+  "git::https://github.com/iwamot/mise-tasks.git//.mise/tasks?ref=v3.4.0",
 ]
