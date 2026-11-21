@@ -9,7 +9,7 @@ minimum_release_age = "1d"
 locked = true
 
 [tools]
-ruby = "4.0.9"
+ruby = "4.0.10"
 
 [task_config]
 includes = [
